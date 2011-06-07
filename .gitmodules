@@ -1,0 +1,3 @@
+[submodule "lib/south"]
+	path = lib/south
+	url = https://github.com/theatlantic/django-south.git

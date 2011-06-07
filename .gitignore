@@ -1,0 +1,9 @@
+.log
+.pot
+.pyc
+.*.swp
+.*.swo
+settings.py
+production_settings.py
+*.sqlite
+static_deploy
