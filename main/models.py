@@ -43,8 +43,8 @@ class HealthCenter(models.Model):
 class RatingCriteria(models.Model):
     name = models.CharField(_('name'), max_length=100)
     max_value = models.FloatField(_('maximum value'))
-    min_value = models.FloatField(_('minimum value'))
-    description = models.TextField(_('description'))
+    min_value = models.FloatField(_('minimum value'), default=0)
+    description = models.TextField(_('description'), blank=True)
 
     def __unicode__(self):
         return '%s' %(self.name.title())
@@ -54,7 +54,7 @@ class Rating(models.Model):
     health_center = models.ForeignKey(HealthCenter)
     criteria = models.ForeignKey(RatingCriteria)
     date = models.DateTimeField(_('date'), auto_now_add=False)
-    description = models.TextField(_('description'))
+    description = models.TextField(_('description'), blank=True)
 
     def __unicode__(self):
         return 'Value-%f, Criteria-%s, Health Center-%s' %(self.value,

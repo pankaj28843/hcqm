@@ -1,17 +1,18 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
-from django.core import serialzers
+from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
 from main.models import *
 
 def home(request):
-    return render(request, 'main/home.html')
+    hctypes = HealthCenterType.objects.all()
+    return render(request, 'main/home.html', {'hctypes':hctypes})
 
 def show_ratings(request, hctype_id):
     hctype = HealthCenterType.objects.get(id=hctype_id)
-    render(request, 'main/show_ratings.html', {'hctype':hctype})
+    return render(request, 'main/show_ratings.html', {'hctype':hctype})
 
 def get_health_centers(request, hctype_id):
     hctype = HealthCenterType.objects.get(id=hctype_id)

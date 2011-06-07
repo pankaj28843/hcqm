@@ -117,11 +117,201 @@
         }
     }, 
     {
+        "pk": "6484bdc58209ba38ffceabeb2e0125fd", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-06-21 22:25:41", 
+            "session_data": "ZDRmYzM4ZDE1MjE5OTZiOTQ2MTIyYmY2NTQ0OWJmMzIyMjIxNDgyNDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "sites.site", 
         "fields": {
             "domain": "example.com", 
             "name": "example.com"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:08:30", 
+            "object_repr": "Anm Skills", 
+            "object_id": "10", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:08:19", 
+            "object_repr": "Supervision", 
+            "object_id": "9", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:08:07", 
+            "object_repr": "Service", 
+            "object_id": "8", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:07:59", 
+            "object_repr": "Cards And Registers", 
+            "object_id": "7", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:07:45", 
+            "object_repr": "Drugs And Consumables", 
+            "object_id": "6", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:07:29", 
+            "object_repr": "Furniture", 
+            "object_id": "5", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:07:19", 
+            "object_repr": "Equipment", 
+            "object_id": "4", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:07:07", 
+            "object_repr": "Building", 
+            "object_id": "3", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:06:56", 
+            "object_repr": "Human Resources", 
+            "object_id": "2", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:06:40", 
+            "object_repr": "Community Interaction", 
+            "object_id": "1", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:01:59", 
+            "object_repr": "Primary Health Center", 
+            "object_id": "2", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-06-07 23:01:36", 
+            "object_repr": "Sub Center", 
+            "object_id": "1", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-06-07 23:01:24", 
+            "object_repr": "Primary Health Center", 
+            "object_id": "2", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-06-07 23:01:24", 
+            "object_repr": "Sub Center", 
+            "object_id": "1", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 8
         }
     }, 
     {
@@ -137,6 +327,106 @@
         "model": "main.healthcentertype", 
         "fields": {
             "name": "Primary Health Center", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 22.0, 
+            "min_value": 0.0, 
+            "name": "Community Interaction", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 3.0, 
+            "min_value": 0.0, 
+            "name": "Human Resources", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 8.0, 
+            "min_value": 0.0, 
+            "name": "Building", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 20.0, 
+            "min_value": 0.0, 
+            "name": "Equipment", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 7.0, 
+            "min_value": 0.0, 
+            "name": "Furniture", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 13.0, 
+            "min_value": 0.0, 
+            "name": "Drugs and Consumables", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 3.0, 
+            "min_value": 0.0, 
+            "name": "Cards and registers", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 10.0, 
+            "min_value": 0.0, 
+            "name": "Service", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 2.0, 
+            "min_value": 0.0, 
+            "name": "Supervision", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "main.ratingcriteria", 
+        "fields": {
+            "max_value": 12.0, 
+            "min_value": 0.0, 
+            "name": "ANM Skills", 
             "description": ""
         }
     }, 
@@ -501,7 +791,7 @@
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2011-06-07 20:04:21", 
+            "last_login": "2011-06-07 22:25:41", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$c5ec2$e563385929aaca6b758a83c39b5e7ce9833ca257", 

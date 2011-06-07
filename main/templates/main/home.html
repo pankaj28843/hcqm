@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content  %}
+<h3>Select Health Center Type</h3>
+<ul>
+    {% for t in hctypes %}
+    <li><a href="{% url show-ratings t.pk %}">{{ t.name  }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
