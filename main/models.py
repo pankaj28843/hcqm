@@ -14,18 +14,31 @@ class HealthCenterType(models.Model):
     def __unicode__(self):
         return '%s' %(self.name.title())
 
+    def get_health_centers(self):
+        return HealthCenter.objects.all().filter(type=self)
+
+    def get_ratings(self):
+        return Rating.objects.all().filter(health_center__type=self)
+
 class HealthCenter(models.Model):
     '''
     Basic details about health center including lattitude and longitude.
     '''
     name = models.CharField(_('name'), max_length=100)
     type = models.ForeignKey(HealthCenterType)
-    lattitude = models.FloatField(_('lattitude'))
+    latitude = models.FloatField(_('latitude'))
     longitude = models.FloatField(_('longitude'))
     description = models.TextField(_('description'), blank=True)
 
     def __unicode__(self):
         return '%s' %(self.name.title())
+
+    def get_rating(self):
+        s = 0
+        ratings = Rating.objects.all(health_center=self)
+        for r in ratings:
+            s = s + r.value
+        return s
 
 class RatingCriteria(models.Model):
     name = models.CharField(_('name'), max_length=100)

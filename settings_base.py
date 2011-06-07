@@ -117,7 +117,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'main',
     'south',
-    'mptt',
     'accounts',
 )
 
