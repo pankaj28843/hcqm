@@ -48,14 +48,15 @@
                 var avg = sum/count;
                 avg = avg.toFixed(1);
                 var dv = (avg-min)/(max-min);
+                console.log(dv)
                 if (dv< 0.33333)
-                    index=0;
+                    index=3;
                 else if (dv < 0.66666)
-                    index=1;
-                else
                     index=2;
+                else
+                    index=1;
 
-                index = Math.min(index, numStyles);
+                //index = Math.min(index, numStyles);
 
                 return {text:avg, index:index};
             };
