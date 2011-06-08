@@ -58,5 +58,5 @@ class Rating(models.Model):
 
     def __unicode__(self):
         return 'Value-%f, Criteria-%s, Health Center-%s' %(self.value,
-                self.criteria, self.health_center, self)
+                self.criteria, self.health_center)
 

@@ -12,7 +12,9 @@ def home(request):
 
 def show_ratings(request, hctype_id):
     hctype = HealthCenterType.objects.get(id=hctype_id)
-    return render(request, 'main/show_ratings.html', {'hctype':hctype})
+    rating_criterias = RatingCriteria.objects.all().order_by('-max_value')
+    return render(request, 'main/show_ratings.html', {'hctype':hctype,
+        'rating_criterias':rating_criterias})
 
 def get_health_centers(request, hctype_id):
     hctype = HealthCenterType.objects.get(id=hctype_id)

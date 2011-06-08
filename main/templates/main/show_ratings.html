@@ -1,9 +1,42 @@
 {% extends 'base.html' %}
+{% block head %}
+<script type='text/javascript' src='{{ STATIC_URL }}js/jquery.gmap.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/marker_clusterer.js'></script>
+<script type='text/javascript'>
+    google.load('maps', '3', {other_params: "sensor=false"});
+    $(document).ready(function(){
+            var health_centers;
+            var ratings;
+            var markers;
+            var map;
+            var marker_cluster = null;
+            var marker = null;
+
+            $('#map').gMap({latitude: 17.375278, longitude: 78.474444, maptype: 'ROADMAP', zoom: 7, controls: {panControl: true, zoomControl: true, mapTypeControl: true, scaleControl: false, streetViewControl: false, overviewMapControl: false }});
+
+            $.getJSON('{% url get-health-centers hctype.id %}', function(data){
+                health_centers=data;
+                for (i=0; i<health_centers.length;i++){
+                $('#map').gMap('addMarker', {latitude: health_centers[i].fields.latitude, longitude: health_centers[i].fields.longitude, content: String(health_centers[i].fields.name)});
+                }
+                //marker_cluster = new MarkerClusterer($('#map').gMap('getMap'), $('#map').gMap.('getMarkers'));
+                });
+            $.getJSON('{% url get-ratings hctype.id %}', function(data){
+                ratings=data;
+                });
+            });
+</script>
+{% endblock %}
 {% block content  %}
-<h3>Select Health Center Type</h3>
-<ul>
-    {% for t in hctypes %}
-    <li><a href='{% url show-ratings t.id %}'>{{ t.name  }}</a></li>
-    {% endfor %}
-</ul>
+<h3>Rating of Health Centers</h3>
+<div>
+    <div style='width:800px; height:500px; border: solid 2px #000;' id='map'></div>
+    <div style='position:absolute; top:150px; right:200px;'>
+        <ul>
+            {% for rc in rating_criterias %}
+            <li><a href='#'>{{ rc.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}
