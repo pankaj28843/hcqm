@@ -33,12 +33,19 @@ class HealthCenter(models.Model):
     def __unicode__(self):
         return '%s' %(self.name.title())
 
-    def get_rating(self):
-        s = 0
-        ratings = Rating.objects.all(health_center=self)
-        for r in ratings:
-            s = s + r.value
-        return s
+    def get_rating(self, rc_id=0):
+        if rc_id == 0:
+            s = 0
+            ratings = Rating.objects.all().filter(health_center=self)
+            for r in ratings:
+                s = s + r.value
+            return s
+        else:
+            try:
+                rc = RatingCriteria.objects.get(id=rc_id)
+                return Rating.objects.get(health_center=self, criteria=rc).value
+            except:
+                return 0
 
 class RatingCriteria(models.Model):
     name = models.CharField(_('name'), max_length=100)
@@ -55,6 +62,9 @@ class Rating(models.Model):
     criteria = models.ForeignKey(RatingCriteria)
     date = models.DateTimeField(_('date'), auto_now_add=False)
     description = models.TextField(_('description'), blank=True)
+
+    class Meta:
+        unique_together = (('health_center', 'criteria'),)
 
     def __unicode__(self):
         return 'Value-%f, Criteria-%s, Health Center-%s' %(self.value,

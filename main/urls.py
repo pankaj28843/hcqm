@@ -6,6 +6,6 @@ urlpatterns = patterns('',
             name='show-ratings'),
         url(r'^get-helth-centers/(?P<hctype_id>\d+)/$',
             'main.views.get_health_centers', name='get-health-centers'),
-        url(r'^get-ratings/(?P<hctype_id>\d+)/$', 'main.views.get_ratings',
+        url(r'^get-ratings/(?P<hctype_id>\d+)/(?P<rc_id>\d+)/$', 'main.views.get_ratings',
             name='get-ratings'),
         )
