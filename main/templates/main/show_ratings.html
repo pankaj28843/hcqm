@@ -4,10 +4,12 @@
 <script type='text/javascript'>
     google.load('maps', '3', {other_params: "sensor=true"});
     $(document).ready(function(){
+            var hctype_id = {{ hctype.id }};
             var health_centers;
             var ratings;
+            var current_criteria = 0;
             var markers = new Array();
-            var mcOptions;
+            var mcOptions = {gridSize: 50, maxZoom: 15};
             var markerCluster;
 
             var center = new google.maps.LatLng(17, 78);
@@ -21,19 +23,23 @@
 
                 $.getJSON('{% url get-ratings hctype.id 0 %}', function(data){
                     ratings=data;
+                    html = '<b>Selcted Rating Criteria - </b>' + ratings[0].name + '<br/>';
+                    html += '<b>Maximum Value - </b>' + ratings[0].max_value + '<br/>';
+                    html += '<b>Minimum Value - </b>' + ratings[0].min_value + '<br/>';
+                    html += '<b>Description - </b>' + ratings[0].description;
+                    $('#info').html(html);
                     count = health_centers.length
                     for (i=0; i<count; i++){
-                var latlng = new google.maps.LatLng(health_centers[i].fields.latitude, health_centers[i].fields.longitude)
-                var marker = new google.maps.Marker({ position: latlng, icon: image, title: "Rating - " +String(ratings[1][i]) + ", Hospital -" + health_centers[i].fields.name})
-                marker.value = ratings[1][i];
-                marker.min_value = ratings[0].min_value
-                marker.max_value = ratings[0].max_value
-                markers.push(marker);
-                }
-                mcOptions = {gridSize: 50, maxZoom: 15};
-                markerCluster = new MarkerClusterer(map, markers, mcOptions);
-                markerCluster.setCalculator(calculate_average);
-                });
+                    var latlng = new google.maps.LatLng(health_centers[i].fields.latitude, health_centers[i].fields.longitude)
+                    var marker = new google.maps.Marker({ position: latlng, icon: image, title: "Rating - " +String(ratings[1][i]) + ", Hospital -" + health_centers[i].fields.name})
+                    marker.value = ratings[1][i];
+                    marker.min_value = ratings[0].min_value;
+                    marker.max_value = ratings[0].max_value;
+                    markers.push(marker);
+                    }
+                    markerCluster = new MarkerClusterer(map, markers, mcOptions);
+                    markerCluster.setCalculator(calculate_average);
+                    });
                 });
 
             function calculate_average(markers, numStyles){
@@ -41,14 +47,13 @@
                 var count = markers.length;
                 var min = markers[0].min_value;
                 var max = markers[0].max_value
-                var sum = 0.0;
+                    var sum = 0.0;
                 for (i=0; i<count; i++){
                     sum += markers[i].value;
                 }
                 var avg = sum/count;
                 avg = avg.toFixed(1);
                 var dv = (avg-min)/(max-min);
-                console.log(dv)
                 if (dv< 0.33333)
                     index=3;
                 else if (dv < 0.66666)
@@ -60,17 +65,49 @@
 
                 return {text:avg, index:index};
             };
+
+            $('.criteria').click(function(e){
+                    e.preventDefault();
+                    var rc_id = $(this).attr('rc_id');
+                    if(parseInt(rc_id) == current_criteria)
+                    return false;
+                    var current_criteria = parseInt(rc_id);
+                    $.getJSON('/get-ratings/'+hctype_id+'/'+rc_id+'/', function(data){
+                        markerCluster.clearMarkers();
+                        markers = [];
+                        ratings = null;
+                        ratings=data;
+                        html = '<b>Selcted Rating Criteria - </b>' + ratings[0].name + '<br/>';
+                        html += '<b>Maximum Value - </b>' + ratings[0].max_value + '<br/>';
+                        html += '<b>Minimum Value - </b>' + ratings[0].min_value + '<br/>';
+                        html += '<b>Description - </b>' + ratings[0].description;
+                        $('#info').html(html);
+                        count = health_centers.length
+                        for (i=0; i<count; i++){
+                        var latlng = new google.maps.LatLng(health_centers[i].fields.latitude, health_centers[i].fields.longitude)
+                        var marker = new google.maps.Marker({ position: latlng, icon: image, title: "Rating - " +String(ratings[1][i]) + ", Hospital -" + health_centers[i].fields.name})
+                        marker.value = ratings[1][i];
+                        marker.min_value = ratings[0].min_value;
+                        marker.max_value = ratings[0].max_value;
+                        markers.push(marker);
+                        }
+                        markerCluster.addMarkers(markers);
+                        });
             });
+    });
 </script>
 {% endblock %}
 {% block content  %}
 <h3>Rating of Health Centers</h3>
 <div>
     <div style='width:800px; height:500px; border: solid 2px #000;' id='map'></div>
-    <div style='position:absolute; top:150px; right:200px;'>
+    <div style='position:absolute; top:150px; left:900px;'>
+        <h3>Health Center Type - {{ hctype.name }}</h3>
+        <span id='info'></span>
         <ul>
+            <li><a href="#" rc_id='0' class='criteria'>All</a></li>
             {% for rc in rating_criterias %}
-            <li><a href='#' rc_id='{{ rc.id }}'>{{ rc.name }}</a></li>
+            <li><a href='#' rc_id='{{ rc.id }}' class='criteria'>{{ rc.name }}</a></li>
             {% endfor %}
         </ul>
     </div>

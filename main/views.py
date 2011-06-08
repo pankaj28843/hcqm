@@ -36,7 +36,7 @@ def get_ratings(request, hctype_id, rc_id=0):
         max_value = c.max_value
         min_value = c.min_value
         name = c.name
-        description = c.name
+        description = c.description
 
     except:
         criterias = RatingCriteria.objects.all()

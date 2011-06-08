@@ -35,6 +35,7 @@ class HealthCenter(models.Model):
 
     def get_rating(self, rc_id=0):
         try:
+            rc = RatingCriteria.objects.get(id=rc_id)
             return Rating.objects.get(health_center=self, criteria=rc).value
         except:
             s = 0
