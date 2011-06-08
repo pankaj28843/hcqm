@@ -6,10 +6,9 @@
     $(document).ready(function(){
             var health_centers;
             var ratings;
-            var markers;
-            var map;
-            var marker_cluster = null;
-            var marker = null;
+            var markers = new Array();
+            var mcOptions;
+            var markerCluster;
 
             var center = new google.maps.LatLng(17, 78);
             var mapOptions = {zoom: 7, center: center, mapTypeId: google.maps.MapTypeId.ROADMAP };
@@ -18,6 +17,14 @@
 
             $.getJSON('{% url get-health-centers hctype.id %}', function(data){
                 health_centers=data;
+
+                for (i=0; i<health_centers.length; i++){
+                var latlng = new google.maps.LatLng(health_centers[i].fields.latitude, health_centers[i].fields.longitude)
+                var marker = new google.maps.Marker({ position: latlng, title: health_centers[i].name})
+                markers.push(marker);
+                }
+                mcOptions = {gridSize: 50, maxZoom: 15};
+                markerCluster = new MarkerClusterer(map, markers, mcOptions);
                 });
             $.getJSON('{% url get-ratings hctype.id %}', function(data){
                 ratings=data;
