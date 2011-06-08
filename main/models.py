@@ -34,18 +34,14 @@ class HealthCenter(models.Model):
         return '%s' %(self.name.title())
 
     def get_rating(self, rc_id=0):
-        if rc_id == 0:
+        try:
+            return Rating.objects.get(health_center=self, criteria=rc).value
+        except:
             s = 0
             ratings = Rating.objects.all().filter(health_center=self)
             for r in ratings:
                 s = s + r.value
             return s
-        else:
-            try:
-                rc = RatingCriteria.objects.get(id=rc_id)
-                return Rating.objects.get(health_center=self, criteria=rc).value
-            except:
-                return 0
 
 class RatingCriteria(models.Model):
     name = models.CharField(_('name'), max_length=100)

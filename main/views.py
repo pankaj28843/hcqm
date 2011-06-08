@@ -31,7 +31,14 @@ def get_ratings(request, hctype_id, rc_id=0):
     ratings = []
     for hc in hctype.get_health_centers():
         ratings.append(hc.get_rating(rc_id=rc_id))
-    if rc_id == 0:
+    try:
+        c = RatingCriteria.objects.get(id=rc_id)
+        max_value = c.max_value
+        min_value = c.min_value
+        name = c.name
+        description = c.name
+
+    except:
         criterias = RatingCriteria.objects.all()
         max_value = 0
         min_value = 0
@@ -40,13 +47,7 @@ def get_ratings(request, hctype_id, rc_id=0):
         for c in criterias:
             max_value = max_value + c.max_value
             min_value = min_value + c.min_value
-    else:
-        c = RatingCriteria.objects.get(id=rc_id)
-        max_value = c.max_value
-        min_value = c.min_value
-        name = c.name
-        description = c.name
-
+    
     mimetype = 'application/json'
     data = json.dumps([{'max_value':max_value, 'min_value':min_value,
         'name':name, 'description':description}, ratings])
