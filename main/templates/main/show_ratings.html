@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% block head %}
 <script type='text/javascript' src='{{ STATIC_URL }}js/marker_clusterer.js'></script>
-<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js'></script>
-<script type='text/javascript' src='http://jquery-ui-map.googlecode.com/svn/trunk/ui/jquery.ui.map.js'></script>
 <script type='text/javascript'>
     google.load('maps', '3', {other_params: "sensor=true"});
     $(document).ready(function(){
@@ -12,20 +10,14 @@
             var map;
             var marker_cluster = null;
             var marker = null;
-var latlng = new google.maps.LatLng(59.3426606750, 18.0736160278);
-        $('#map').gmap({'center': latlng, 'callback': function () {
-                $('#map').gmap('addMarker', {'position': latlng, 'title': 'Hello world!'});
-            }
-        });
+
+            var center = new google.maps.LatLng(17, 78);
+            var mapOptions = {zoom: 7, center: center, mapTypeId: google.maps.MapTypeId.ROADMAP };
+            var map = new google.maps.Map(document.getElementById("map"),
+                mapOptions);
+
             $.getJSON('{% url get-health-centers hctype.id %}', function(data){
                 health_centers=data;
-                /*
-                $('#map').gmap({center: new google.maps.LatLng(17,78), 'callback':function(){
-                    for (i=0; i<10;i++){
-                    $('#map').gmap('addMarker', {position: new google.maps.LatLng(health_centers[i].fields.latitude, health_centers[i].fields.longitude)});
-                    }
-                    marker_cluster = new MarkerClusterer($('#map').gmap('getMap'), $('#map').gmap('getMarkers'));
-                    }}); */
                 });
             $.getJSON('{% url get-ratings hctype.id %}', function(data){
                 ratings=data;
