@@ -117,10 +117,10 @@
         }
     }, 
     {
-        "pk": "6484bdc58209ba38ffceabeb2e0125fd", 
+        "pk": "31d410c22095678d280312778016904a", 
         "model": "sessions.session", 
         "fields": {
-            "expire_date": "2011-06-21 22:25:41", 
+            "expire_date": "2011-06-23 11:41:11", 
             "session_data": "ZDRmYzM4ZDE1MjE5OTZiOTQ2MTIyYmY2NTQ0OWJmMzIyMjIxNDgyNDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
         }
     }, 
@@ -33584,7 +33584,7 @@
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2011-06-07 22:25:41", 
+            "last_login": "2011-06-09 11:41:11", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$c5ec2$e563385929aaca6b758a83c39b5e7ce9833ca257", 
