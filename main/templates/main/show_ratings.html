@@ -5,18 +5,39 @@
     google.load('maps', '3', {other_params: "sensor=true"});
     $(document).ready(function(){
             var hctype_id = {{ hctype.id }};
+            var border;
+            var d_border;
             var health_centers;
             var ratings;
             var current_criteria = 0;
             var markers = new Array();
             var mcOptions = {gridSize: 50, maxZoom: 15};
             var markerCluster;
+            var filterMarkers = true;
 
             var center = new google.maps.LatLng(17, 78);
             var images = ['{{ STATIC_URL }}img/Hospital_Blue.jpg', '{{ STATIC_URL }}img/Hospital_Yellow.jpg', '{{ STATIC_URL }}img/Hospital_Red.jpg',];
-            var mapOptions = {zoom: 7, center: center, mapTypeId: google.maps.MapTypeId.ROADMAP };
+            var mapOptions = {zoom: 6, center: center, mapTypeId: google.maps.MapTypeId.ROADMAP };
             var map = new google.maps.Map(document.getElementById("map"),
                 mapOptions);
+            $('.area').each(function(){
+                var area = $(this);
+            $.getJSON('/static/'+$(this).attr('name')+'.json', function(data){
+                var border_coords = [];
+                for (i=0; i<data.length; i++){
+                var latlng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+                border_coords.push(latlng);
+                }
+                if($(area).attr('name')=='ap_border'){
+                border = new google.maps.Polygon({paths: border_coords, strokeColor: '#FF0000', strokeOpacity: 0.8, strokeWeight: 3, fillColor: "#FF0000", fillOpacity: 0.35});
+                border.setMap(map);
+                }
+                else {
+                d_border = new google.maps.Polygon({paths: border_coords, strokeColor: '#FF0000', strokeOpacity: 0.8, strokeWeight: 3, fillColor: "#6666FF", fillOpacity: 0.35});
+                d_border.setMap(map);
+                }
+                });
+            });
 
             $.getJSON('{% url get-health-centers hctype.id %}', function(data){
                 health_centers=data;
@@ -48,6 +69,9 @@
                     }
                     markerCluster = new MarkerClusterer(map, markers, mcOptions);
                     markerCluster.setCalculator(calculate_average);
+
+                    //map.setCenter(getCentroid(border));
+                    //map.setZoom(6);
                     });
                 });
 
@@ -74,6 +98,87 @@
 
                 return {text:avg, index:index};
             };
+
+            function isInPolygon(polygon, marker){
+                poly = polygon.getPath()
+                for(var c = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
+                    ((poly.getAt(i).lng() <= marker.getPosition().lng() && marker.getPosition().lng() < poly.getAt(j).lng()) || (poly.getAt(j).lng() <= marker.getPosition().lng() && marker.getPosition().lng() < poly.getAt(i).lng()))
+                        && (marker.getPosition().lat() < (poly.getAt(j).lat() - poly.getAt(i).lat()) * (marker.getPosition().lng() - poly.getAt(i).lng()) / (poly.getAt(j).lng() - poly.getAt(i).lng()) + poly.getAt(i).lat())
+                        && (c = !c);
+                return c;
+            }
+
+            function getArea(polygon) {
+                var area=0;
+                var points = polygon.getPath();
+                var j = points.length-1;
+                var p1;
+                var p2;
+
+                for (var i=0;i<points.length;j=i++) {
+                    p1 = points.getAt(i);
+                    p2 = points.getAt(j);
+                    area+=p1.lat()*p2.lng();
+                    area-=p1.lng()*p2.lat();
+                }
+                area/=2;
+                return area;
+            };
+
+            function getCentroid(polygon) {
+                var points = polygon.getPath();
+                var x=0;
+                var y=0;
+                var f;
+                var j = points.length-1;
+                var p1;
+                var p2;
+
+                for (var i=0;i<points.length;j=i++) {
+                    p1 = points.getAt(i);
+                    p2 = points.getAt(j);
+                    f = p1.lat()*p2.lng() - p2.lat()*p1.lng();
+                    x += (p1.lat() + p2.lat())*f;
+                    y += (p1.lng() + p2.lng())*f;
+                }
+
+                f = getArea(polygon)*6;
+                return new google.maps.LatLng(x/f, y/f);
+            };
+            
+            $('.area').click(function(e){
+                    e.preventDefault();
+                    if($(this).attr('name')=='ap_border'){
+                    if(d_border!=null)
+                    markerCluster.clearMarkers();
+                    markerCluster.addMarkers(markers);
+                    filterMarkers = false;
+                    map.setCenter(getCentroid(border));
+                    map.setZoom(6);
+                    map.setCenter
+                    return false;
+                    }
+                    $.getJSON('/static/'+$(this).attr('name')+'.json', function(data){
+                        var border_coords = [];
+                        for (i=0; i<data.length; i++){
+                        var latlng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+                        border_coords.push(latlng);
+                        }
+                        //d_border = new google.maps.Polygon({paths: border_coords, strokeColor: '#FF0000', strokeOpacity: 0.8, strokeWeight: 3, fillColor: "#6666FF", fillOpacity: 0.35});
+                        d_border.setPath(border_coords);
+                        d_border.setMap(map);
+                        var filtered_markers = [];
+                        markerCluster.clearMarkers();
+                        for (i=0; i<markers.length; i++){
+                        if (isInPolygon(d_border, markers[i])==true)
+                        filtered_markers.push(markers[i]);
+                        }
+                        markerCluster.addMarkers(filtered_markers);
+                        filterMarkers = true;
+                        map.setCenter(getCentroid(d_border));
+                        map.setZoom(8);
+                        });
+            });
 
             $('.criteria').click(function(e){
                     e.preventDefault();
@@ -108,7 +213,16 @@
                         marker.max_value = ratings[0].max_value;
                         markers.push(marker);
                         }
-                    markerCluster.addMarkers(markers);
+                    if(filterMarkers == true && d_border != null){
+                        var filtered_markers = [];
+                        for (i=0; i<markers.length; i++){
+                            if (isInPolygon(d_border, markers[i])==true)
+                                filtered_markers.push(markers[i]);
+                        }
+                        markerCluster.addMarkers(filtered_markers);
+                    }
+                    else
+                        markerCluster.addMarkers(markers);
                     });
             });
     });
@@ -117,8 +231,19 @@
 {% block content  %}
 <h3>Rating of Health Centers</h3>
 <div>
-    <div style='width:800px; height:500px; border: solid 2px #000;' id='map'></div>
+    <div style='width:800px; height:600px; border: solid 2px #000;' id='map'></div>
     <div style='position:absolute; top:150px; left:900px;'>
+        <h3>Select district</h3>
+        <ul>
+            <li><a href='#' name='ap_border' class='area'>All</a></li>
+            <li><a href='#' name='district_1' class='area'>District 1</a></li>
+            <!--
+            <li><a href='#' name='district_2' class='area'>District 2</a></li>
+            <li><a href='#' name='district_3' class='area'>District 3</a></li>
+            <li><a href='#' name='district_4' class='area'>District 4</a></li>
+            -->
+            <li><a href='#' name='district_5' class='area'>District 2</a></li>
+        </ul>
         <h3>Health Center Type - {{ hctype.name }}</h3>
         <span id='info'></span>
         <ul>
